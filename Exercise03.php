@@ -2,19 +2,23 @@
 
 session_start();
 
-foreach (['product', 'quantity', 'price'] as $key) {
-    if (!isset($_SESSION[$key])) {
-        $_SESSION[$key] = [];
-    }
+if (!isset($_SESSION['product'])) {
+    $_SESSION['product'] = [];
+}
+if (!isset($_SESSION['quantity'])) {
+    $_SESSION['quantity'] = [];
+}
+if (!isset($_SESSION['price'])) {
+    $_SESSION['price'] = [];
 }
 
 if (isset($_POST['add'])) {
-    $_SESSION['product'][] = $_POST['name'];
-    $_SESSION['quantity'][] = $_POST['quantity'];
-    $_SESSION['price'][] = $_POST['price'];
+    $_SESSION['product'] = $_POST['name'];
+    $_SESSION['quantity'] = $_POST['quantity'];
+    $_SESSION['price'] = $_POST['price'];
 }
-?>
 
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -55,36 +59,33 @@ if (isset($_POST['add'])) {
 
         <?php
         if (!empty($_SESSION['product'])) {
-            for ($i = 0; $i < count($_SESSION['product']); $i++) {
+            //            for ($i = 0; $i < count($_SESSION['product']); $i++) {
         ?>
 
-                <tbody>
-                    <th><?= htmlspecialchars($_SESSION['name'][$i]); ?></th>
-                    <th><?= htmlspecialchars($_SESSION['price'][$i]); ?></th>
-                    <th><?= htmlspecialchars($_SESSION['quantity'][$i]); ?></th>
-                    <th><?php echo ($_SESSION['quantity'][$i] * $_SESSION['price'][$i]); ?></th>
-                    <th><input type="submit" name="edit" id="edit" value="Edit"><input type="button" name="delete" id="delete" value="Delete"></th>
-                </tbody>
-
+            <tbody>
+                <tr>
+                    <td><?php echo htmlspecialchars($_SESSION['product']); ?></td>
+                    <td><?php echo htmlspecialchars($_SESSION['quantity']); ?></td>
+                    <td><?php echo htmlspecialchars($_SESSION['price']); ?></td>
+                    <td><?php echo ($_SESSION['quantity'] * $_SESSION['price']); ?></td>
+                    <td><input type="submit" name="edit" value="Edit"><input type="button" name="delete" value="Delete"></td>
+                </tr>
+            </tbody>
 
         <?php
-            }
         }
+        //    }
         ?>
 
         <tfoot>
             <tr>
                 <td colspan="3">Total:</td>
-                <td><?php
-
-                    ?></td>
+                <td>0</td>
                 <td><button>Calculate total</button></td>
             </tr>
         </tfoot>
+
     </table>
-
-
-
 </body>
 
 </html>
