@@ -9,9 +9,9 @@ foreach (['product', 'quantity', 'price'] as $key) {
 }
 
 if (isset($_POST['add'])) {
-    $_SESSION['product'] = $_POST['name'];
-    $_SESSION['quantity'] = $_POST['quantity'];
-    $_SESSION['price'] = $_POST['price'];
+    $_SESSION['product'][] = $_POST['name'];
+    $_SESSION['quantity'][] = $_POST['quantity'];
+    $_SESSION['price'][] = $_POST['price'];
 }
 ?>
 
@@ -54,9 +54,7 @@ if (isset($_POST['add'])) {
         </thead>
 
         <?php
-        var_dump(__LINE__);
         if (!empty($_SESSION['product'])) {
-            var_dump(__LINE__);
             for ($i = 0; $i < count($_SESSION['product']); $i++) {
         ?>
 
