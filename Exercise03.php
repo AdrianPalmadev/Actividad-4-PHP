@@ -1,23 +1,24 @@
 <?php
-
 session_start();
 
-if (!isset($_SESSION['product'])) {
+// con el is_array verifica si es array o no lo es.
+if (!isset($_SESSION['product']) || !is_array($_SESSION['product'])) {
     $_SESSION['product'] = [];
 }
-if (!isset($_SESSION['quantity'])) {
+if (!isset($_SESSION['quantity']) || !is_array($_SESSION['quantity'])) {
     $_SESSION['quantity'] = [];
 }
-if (!isset($_SESSION['price'])) {
+if (!isset($_SESSION['price']) || !is_array($_SESSION['price'])) {
     $_SESSION['price'] = [];
 }
 
 if (isset($_POST['add'])) {
-    $_SESSION['product'] = $_POST['name'];
-    $_SESSION['quantity'] = $_POST['quantity'];
-    $_SESSION['price'] = $_POST['price'];
+    // usamos el count, para que siempre cojamos el indice
+    $indice = count($_SESSION['product']);
+    $_SESSION['product'][$indice] = $_POST['name'];
+    $_SESSION['quantity'][$indice] = $_POST['quantity'];
+    $_SESSION['price'][$indice] = $_POST['price'];
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -56,35 +57,50 @@ if (isset($_POST['add'])) {
                 <th>Actions</th>
             </tr>
         </thead>
-
-        <?php
-        if (!empty($_SESSION['product'])) {
-            //            for ($i = 0; $i < count($_SESSION['product']); $i++) {
-        ?>
-
-            <tbody>
-                <tr>
-                    <td><?php echo htmlspecialchars($_SESSION['product']); ?></td>
-                    <td><?php echo htmlspecialchars($_SESSION['quantity']); ?></td>
-                    <td><?php echo htmlspecialchars($_SESSION['price']); ?></td>
-                    <td><?php echo ($_SESSION['quantity'] * $_SESSION['price']); ?></td>
-                    <td><input type="submit" name="edit" value="Edit"><input type="button" name="delete" value="Delete"></td>
-                </tr>
-            </tbody>
-
-        <?php
-        }
-        //    }
-        ?>
-
+        <tbody>
+            <?php
+            if (!empty($_SESSION['product'])) {
+                for ($i = 0; $i < count($_SESSION['product']); $i++) {
+            ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($_SESSION['product'][$i]); ?></td>
+                        <td><?php echo htmlspecialchars($_SESSION['quantity'][$i]); ?></td>
+                        <td><?php echo htmlspecialchars($_SESSION['price'][$i]); ?></td>
+                        <td><?php echo ($_SESSION['quantity'][$i] * $_SESSION['price'][$i]); ?></td>
+                        <td>
+                            <form method="POST" action="#">
+                                <input type="hidden" name="index" value="<?php echo $i; ?>">
+                                <input type="submit" name="edit" value="Edit">
+                                <input type="submit" name="delete" value="Delete">
+                            </form>
+                        </td>
+                    </tr>
+            <?php
+                }
+            }
+            ?>
+        </tbody>
         <tfoot>
             <tr>
                 <td colspan="3">Total:</td>
-                <td>0</td>
-                <td><button>Calculate total</button></td>
+                <td>
+                    <?php
+                    $total = 0;
+                    if (isset($_POST['total'])) {
+                        for ($i = 0; $i < count($_SESSION['product']); $i++) {
+                            $total += $_SESSION['quantity'][$i] * $_SESSION['price'][$i];
+                        }
+                    }
+                    echo $total;
+                    ?>
+                </td>
+                <td>
+                    <form method="POST" action="#">
+                        <input type="submit" name="total" value="Calculate total">
+                    </form>
+                </td>
             </tr>
         </tfoot>
-
     </table>
 </body>
 
