@@ -1,6 +1,13 @@
 <?php
 session_start();
 
+
+var_dump($_SESSION['product']);
+echo '<br>';
+var_dump($_SESSION['quantity']);
+echo '<br>';
+var_dump($_SESSION['price']);
+
 // con el is_array verifica si es array o no lo es.
 if (!isset($_SESSION['product']) || !is_array($_SESSION['product'])) {
     $_SESSION['product'] = [];
@@ -25,6 +32,14 @@ if (isset($_POST['delete'])) {
     unset($_SESSION['quantity'][$_POST['index']]);
     unset($_SESSION['price'][$_POST['index']]);
 }
+
+
+if (isset($_POST['upd'])) {
+    $_SESSION['product'][] = $_POST['name'];
+    $_SESSION['quantity'][] = $_POST['quantity'];
+    $_SESSION['price'][] = $_POST['price'];
+}
+
 ?>
 
 <!DOCTYPE html>
