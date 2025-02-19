@@ -1,17 +1,17 @@
 <?php
 
-session_start();
-if (!isset($_SESSION['array'])) {
-    $_SESSION['array'] = [10, 20, 22];
+session_start(); // inicializamos la session
+if (!isset($_SESSION['array'])) { // en el caso de que el array no este inicalizado lo creamos.
+    $_SESSION['array'] = [10, 20, 22]; // le añadimos valores, los que sean.
 }
 
-if (isset($_POST['Modify'])) {
-    $value = $_POST['newValue'];
+if (isset($_POST['Modify'])) { // en el caso de que le demos al boton de modify, cambiamos el value
+    $value = $_POST['newValue']; // guardamos en variables locales
     $position = $_POST['position'];
-    $_SESSION['array'][$position] = $value;
+    $_SESSION['array'][$position] = $value; // luego lo añadimos a la sesion.
 }
 ?>
-
+<!-- HTML con el form -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,8 +49,10 @@ if (isset($_POST['Modify'])) {
 
 
     <?php
+    // printeamos el array
     echo "Current array: " . $_SESSION['array'][0] . ", " . $_SESSION['array'][1] . ", " . $_SESSION['array'][2] . '<br><br>';
     if (isset($_POST['Average'])) {
+        // en el caso de que pida el avarage, lo calculamos de forma local y lo printeamos
         $sum = $_SESSION['array'][0] + $_SESSION['array'][1] + $_SESSION['array'][2];
 
         echo "The actual avarage is: " . ($sum / 3);
